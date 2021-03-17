@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Webshop</title>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.1/css/all.css" integrity="sha384-vp86vTRFVJgpjF9jiIGPEEqYqlDwgyBgEF109VFjmqGmIY/Y4HV4d3Gp2irVfcrp" crossorigin="anonymous">
+     <link rel="stylesheet" href="style.css">
+</head>
+<body>
+ 
+<nav class="navbar">
+    <div class="navbar-center">
+        <span class="nav-icon">
+            <i class="fas fa-bars"></i>
+        </span>
+        <!-- <img src="images/logo.jpg" alt="website logo"/> -->
+        <h3>Fakeapi Webbbutik</h3>
+    </div>
+        <div class="cart-btn">
+            <span class="nav-icon">
+                <i class="fas fa-cart-plus"></i>
+            </span>
+            <div class="cart-items"></div>
+        </div>
+    </div>
+</nav>
+<header>
+  </header>
+
+  <section class="products">
+    <div class="section-title">
+        <h2>Din valda produkt</h2>
+    </div>
+   
+    <div class="prDOM">
+
+
+    </div>
+
+</section>
+  <section class="container">
+    <div class="pM">
+
+    </div>
+    <form id="my-form">
+      <div class="msg"></div>
+    <div>
+        <label for="name">Namn:</label>
+        <input type="text" id="name" name="name" required>
+      </div>
+      <div>
+        <label for="email">Email:</label>
+        <input type="text" id="email" name="email" required>
+      </div>
+      <div>
+        <label for="phone">Telefon:</label>
+        <input type="text" id="phone" name="phone" required>
+      </div>
+      <div>
+        <label for="address">Leveransaddress:</label>
+        <input type="text" id="address" name="address" required>
+      </div>
+      <input class="btn" type="submit" value="Acceptera köp" onclick="submitThis()" >
+    </form>
+    <ul id="users"></ul>
+</div>
+  </section>
+
+  <div class="conMessage">
+
+  </div>
+
+<script>  
+// I get the class where I will put my object from the api webstore in the right place in the html
+    const prDOM = document.querySelector('.prDOM');
+    const params = new URLSearchParams(window.location.search)
+    let prodId = params.get('productId'); 
+
+    const messageDOM = document.querySelector('.pM');
+//the fetch method gets the param from URLSearchParams and specific gets the product id which I put in the varible prodId.
+//that whay I can pinpoint the specific product and get the right data
+    let prod = fetch("https://fakestoreapi.com/products/" + prodId)
+            .then(res=>res.json())
+            .then((data) => render(data))
+    // the method then calls the function render and sends the object with it 
+
+  function render(data) {
+    console.log("Produkten har laddats in",data);
+    let output = "";
+    // data.forEach(data=> {
+      output += `
+      <article class="product">
+      <article class="img-container">
+          <div class="img-container">
+              <img src="${data.image}" alt="product" class="product-img"/> 
+          </div>
+          <h3>${data.title}</h3>
+          <h4>kr ${data.price}</h4>
+          <p>${data.description}</p>
+      </article>
+    </article>
+      `;
+      prDOM.innerHTML = output;
+  };
+ // the render function adds the object with html
+
+ //this submit function is called when you have filled in your information which you can also see have required that you fill in
+ // all the information that is requested. When the user click on "acceptera köp" the new html will render on the page: "Tack för ditt köp"
+   function submitThis(){
+       console.log("Välkommen åter");
+    let message = "";
+    // data.forEach(data=> {
+      message += `
+     
+          <h3>Tack för ditt köp!</h3>
+         
+    
+      `;
+      messageDOM.innerHTML = message;
+   };
+</script>
+</body>
+</html>
